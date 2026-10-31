@@ -45,89 +45,23 @@ O instalador detectará automaticamente os agentes presentes na sua máquina (He
 
 ---
 
-## 🤖 Como Conectar sua IA Favorita Manualmente
+## 🤖 Como Conectar sua IA Favorita (MCP + Skill)
 
-Se você prefere configurar seu editor ou IA manualmente, siga as instruções abaixo:
+Para que qualquer inteligência artificial opere com o Modo Imparável com máxima eficiência e segurança, a integração é composta por dois pilares fundamentais:
+- 🔌 **Passo 1: Conectar o Servidor MCP** — Fornece as ferramentas técnicas para a IA poder consultar e executar ações no banco de dados.
+- 🧠 **Passo 2: Instalar a Skill** — Fornece o discernimento e regras comportamentais (como o fluxo obrigatório de confirmação em 2 etapas para finanças e exclusões, formato de datas e regras de contexto).
+
+Abaixo estão as instruções para cada plataforma:
+
+---
 
 ### 1. Cursor IDE
-No diretório do seu projeto ou no diretório global (`~/.cursor/mcp.json`):
-Crie o arquivo `.cursor/mcp.json`:
-```json
-{
-  "mcpServers": {
-    "modo-imparavel": {
-      "url": "https://mcp.modoimparavel.site/mcp",
-      "headers": {
-        "Authorization": "Bearer <SEU_PAT_AQUI>"
-      }
-    }
-  }
-}
-```
-*Copie também a regra de comportamento em `connectors/cursor/modo-imparavel.mdc` para `.cursor/rules/` para que o agente do Cursor conheça as melhores práticas do Modo Imparável.*
 
----
-
-### 2. Claude (Anthropic)
-
-#### Claude Code (CLI)
-No terminal:
-```bash
-claude mcp add --transport http modo-imparavel https://mcp.modoimparavel.site/mcp --header "Authorization: Bearer <SEU_PAT_AQUI>"
-```
-
-#### Claude Desktop
-Edite o arquivo de configuração do Claude Desktop (`claude_desktop_config.json`):
-```json
-{
-  "mcpServers": {
-    "modo-imparavel": {
-      "url": "https://mcp.modoimparavel.site/mcp",
-      "headers": {
-        "Authorization": "Bearer <SEU_PAT_AQUI>"
-      }
-    }
-  }
-}
-```
-
----
-
-### 3. Hermes Agent (Nous Research)
-O Hermes Agent é ideal para rodar em VPS ou servidores locais:
-
-**Via CLI Oficial:**
-```bash
-hermes mcp add modo-imparavel --url https://mcp.modoimparavel.site/mcp --auth header
-```
-*(O Hermes solicitará que você cole o seu Token PAT no terminal).*
-
-**Ou adicionando em `~/.hermes/config.yaml`:**
-```yaml
-mcp_servers:
-  modo-imparavel:
-    url: "https://mcp.modoimparavel.site/mcp"
-    headers:
-      Authorization: "Bearer <SEU_PAT_AQUI>"
-```
-
-Para instalar a skill no Hermes em 1 comando:
-```bash
-hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/skill/SKILL.md -y
-```
-
----
-
-### 4. OpenCode & OpenClaw
-
-**OpenCode (`opencode.jsonc`):**
-```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "servers": {
+- **🔌 Passo 1 (MCP):** No diretório do seu projeto ou global (`~/.cursor/mcp.json`), configure o arquivo `.cursor/mcp.json`:
+  ```json
+  {
+    "mcpServers": {
       "modo-imparavel": {
-        "type": "remote",
         "url": "https://mcp.modoimparavel.site/mcp",
         "headers": {
           "Authorization": "Bearer <SEU_PAT_AQUI>"
@@ -135,34 +69,172 @@ hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-impar
       }
     }
   }
-}
-```
+  ```
 
-**OpenClaw CLI:**
-```bash
-openclaw mcp add modo-imparavel https://mcp.modoimparavel.site/mcp --headers "Authorization=Bearer <SEU_PAT_AQUI>"
-```
+- **🧠 Passo 2 (Skill / Regras):** Copie o arquivo de regras em `connectors/cursor/modo-imparavel.mdc` para a pasta `.cursor/rules/` do seu projeto. O Cursor injetará automaticamente as regras operacionais em todas as conversas do assistente.
 
 ---
 
-### 5. ChatGPT (Custom GPTs / Actions)
-Como a interface web do ChatGPT opera via OpenAPI em vez de MCP direto:
-1. No [ChatGPT](https://chatgpt.com), crie ou edite um **Custom GPT**.
-2. Em **Instructions**, cole o conteúdo de `skill/SKILL.md`.
-3. Em **Actions** > **Create new action**:
-   - Em **Schema**, cole o conteúdo de `connectors/chatgpt/openapi.json`.
-   - Em **Authentication**, escolha **API Key** -> **Bearer** e insira o seu PAT.
-4. Salve e comece a conversar com o Modo Imparável dentro do ChatGPT!
+### 2. Claude (Anthropic)
+
+#### Claude Code (CLI)
+- **🔌 Passo 1 (MCP):** Adicione o servidor via terminal:
+  ```bash
+  claude mcp add --transport http modo-imparavel https://mcp.modoimparavel.site/mcp --header "Authorization: Bearer <SEU_PAT_AQUI>"
+  ```
+- **🧠 Passo 2 (Skill):** Copie o arquivo `skill/SKILL.md` para o diretório de skills do Claude:
+  ```bash
+  mkdir -p ~/.claude/skills/modo-imparavel
+  cp skill/SKILL.md ~/.claude/skills/modo-imparavel/
+  ```
+  *(Ou adicione uma referência ao `skill/SKILL.md` no arquivo `CLAUDE.md` do seu projeto).*
+
+#### Claude Desktop
+- **🔌 Passo 1 (MCP):** Adicione no seu arquivo `claude_desktop_config.json`:
+  ```json
+  {
+    "mcpServers": {
+      "modo-imparavel": {
+        "url": "https://mcp.modoimparavel.site/mcp",
+        "headers": {
+          "Authorization": "Bearer <SEU_PAT_AQUI>"
+        }
+      }
+    }
+  }
+  ```
+- **🧠 Passo 2 (Skill):** Nas **Instruções Personalizadas** (ou no System Prompt do seu Projeto no Claude), cole o conteúdo de `skill/SKILL.md`.
 
 ---
 
-### 6. Antigravity (Google DeepMind)
-Adicione a configuração em `mcp_servers` com a URL `https://mcp.modoimparavel.site/mcp` e o cabeçalho `Authorization: Bearer <SEU_PAT_AQUI>`.
+### 3. Hermes Agent (Nous Research)
+
+- **🔌 Passo 1 (MCP):** No terminal da sua VPS ou máquina local, adicione o servidor:
+  ```bash
+  hermes mcp add modo-imparavel --url https://mcp.modoimparavel.site/mcp --auth header
+  ```
+  *(O Hermes perguntará se precisa de autenticação [Enter] e solicitará seu Token PAT).*
+  
+  *Ou cole diretamente em `~/.hermes/config.yaml`:*
+  ```yaml
+  mcp_servers:
+    modo-imparavel:
+      url: "https://mcp.modoimparavel.site/mcp"
+      headers:
+        Authorization: "Bearer <SEU_PAT_AQUI>"
+  ```
+
+- **🧠 Passo 2 (Skill):** Instale a skill em 1 comando com o gerenciador nativo do Hermes:
+  ```bash
+  hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/skill/SKILL.md -y
+  ```
 
 ---
 
-### 7. Grok (xAI) e DeepSeek (V3/R1)
-Utilize o conector através do **Cursor**, **Hermes Agent** ou **OpenCode**, selecionando o modelo Grok ou DeepSeek de sua preferência. O harness gerencia a execução das ferramentas do Modo Imparável em tempo real.
+### 4. Antigravity (Google DeepMind)
+
+- **🔌 Passo 1 (MCP):** No arquivo de configuração MCP do Antigravity (`mcp_config.json` ou painel de configurações):
+  ```json
+  {
+    "mcp_servers": {
+      "modo-imparavel": {
+        "url": "https://mcp.modoimparavel.site/mcp",
+        "headers": {
+          "Authorization": "Bearer <SEU_PAT_AQUI>"
+        }
+      }
+    }
+  }
+  ```
+
+- **🧠 Passo 2 (Skill):** Copie o arquivo `skill/SKILL.md` para o diretório de skills do Antigravity:
+  ```bash
+  mkdir -p ~/.gemini/antigravity/skills/modo-imparavel
+  cp skill/SKILL.md ~/.gemini/antigravity/skills/modo-imparavel/
+  ```
+
+---
+
+### 5. Codex (OpenAI)
+
+- **🔌 Passo 1 (MCP):** Configure o servidor no seu arquivo `.codex/mcp.json` ou `mcp.json`:
+  ```json
+  {
+    "mcpServers": {
+      "modo-imparavel": {
+        "url": "https://mcp.modoimparavel.site/mcp",
+        "headers": {
+          "Authorization": "Bearer <SEU_PAT_AQUI>"
+        }
+      }
+    }
+  }
+  ```
+
+- **🧠 Passo 2 (Skill):** Copie `skill/SKILL.md` para o diretório de skills do seu workspace:
+  ```bash
+  mkdir -p .codex/skills/modo-imparavel
+  cp skill/SKILL.md .codex/skills/modo-imparavel/
+  ```
+  *(Ou referencie as regras no seu `AGENTS.md`).*
+
+---
+
+### 6. ChatGPT (Custom GPTs / Actions)
+
+- **🔌 Passo 1 (Ação / Ferramentas):**
+  1. No [ChatGPT](https://chatgpt.com), crie ou edite um **Custom GPT**.
+  2. Em **Actions** > **Create new action**:
+     - Em **Schema**, cole o conteúdo de `connectors/chatgpt/openapi.json`.
+     - Em **Authentication**, escolha **API Key** -> **Bearer** e insira o seu PAT.
+- **🧠 Passo 2 (Skill / Instruções):**
+  - No campo **Instructions** do seu GPT, cole o conteúdo completo do arquivo `skill/SKILL.md`.
+
+---
+
+### 7. OpenCode & OpenClaw
+
+#### OpenCode
+- **🔌 Passo 1 (MCP):** Em `opencode.jsonc`:
+  ```jsonc
+  {
+    "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+      "servers": {
+        "modo-imparavel": {
+          "type": "remote",
+          "url": "https://mcp.modoimparavel.site/mcp",
+          "headers": {
+            "Authorization": "Bearer <SEU_PAT_AQUI>"
+          }
+        }
+      }
+    }
+  }
+  ```
+- **🧠 Passo 2 (Skill):**
+  ```bash
+  mkdir -p .opencode/skills/modo-imparavel
+  cp skill/SKILL.md .opencode/skills/modo-imparavel/
+  ```
+
+#### OpenClaw
+- **🔌 Passo 1 (MCP):**
+  ```bash
+  openclaw mcp add modo-imparavel https://mcp.modoimparavel.site/mcp --headers "Authorization=Bearer <SEU_PAT_AQUI>"
+  ```
+- **🧠 Passo 2 (Skill):**
+  ```bash
+  mkdir -p ~/.openclaw/skills/modo-imparavel
+  cp skill/SKILL.md ~/.openclaw/skills/modo-imparavel/
+  ```
+
+---
+
+### 8. Grok (xAI) e DeepSeek (V3/R1)
+
+Utilize os modelos Grok ou DeepSeek através de um dos harnesses suportados acima (**Cursor**, **Hermes Agent** ou **OpenCode**). 
+Basta selecionar o modelo desejado no seu cliente; a conexão MCP e a Skill instaladas no harness garantirão que tanto o Grok quanto o DeepSeek executem as ferramentas com precisão e responsabilidade.
 
 ---
 
