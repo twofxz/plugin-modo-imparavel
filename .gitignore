@@ -1,0 +1,30 @@
+# Environment variables & secrets
+.env
+.env.*
+*.env
+*.pat
+*.token
+*.key
+pat_*
+id_rsa
+*.pem
+
+# Dependencies & build outputs
+node_modules/
+dist/
+build/
+.cache/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor local caches (configs with personal tokens)
+.cursor/mcp.json.local
+claude_desktop_config.json.local
+config.yaml.local
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
