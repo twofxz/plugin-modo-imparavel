@@ -1,15 +1,23 @@
-# Conexão com Grok (xAI) e DeepSeek
+# Conexão com Grok e DeepSeek
 
-Os modelos **Grok (xAI)** e **DeepSeek (V3/R1)** podem operar o Modo Imparável através de três métodos principais:
+**Status: Configuração manual / Não homologado nesta entrega.**
 
-### 1. Via Harness / Ambiente de Desenvolvimento (Cursor, OpenCode, Hermes) — Recomendado
-A forma mais produtiva e avançada de usar Grok ou DeepSeek com o Modo Imparável é selecionando esses modelos dentro de um cliente MCP nativo:
-- **Cursor IDE:** Selecione o modelo (ex: `deepseek-v3`, `claude-3.5-sonnet` ou `grok`) e utilize a configuração MCP de `connectors/cursor/mcp.json`.
-- **Hermes Agent (Nous Research):** Configure o Hermes para usar DeepSeek ou Grok como provedor LLM em `~/.hermes/config.yaml` enquanto mantém o MCP do Modo Imparável ativo. O Hermes chamará as ferramentas autonomamente.
-- **OpenCode:** Configure seu arquivo `opencode.jsonc` apontando para o modelo desejado.
+É essencial diferenciar dois cenários completamente distintos:
 
-### 2. Na Interface Web (Instruções Customizadas de Sistema)
-Se você estiver utilizando a interface web direta do Grok ou DeepSeek:
-1. Abra as Configurações de Instrução Customizada / Prompt de Sistema do seu chat.
-2. Cole o conteúdo de `skill/SKILL.md` como diretriz operacional do modelo.
-3. Nota: Para execução em tempo real de chamadas no banco, utilize os harnesses da Opção 1 que conectam no protocolo MCP em tempo real.
+---
+
+### Cenário 1: Modelos Grok ou DeepSeek dentro de um Cliente / Harness MCP (Recomendado)
+A forma funcional de usar modelos como **Grok (xAI)** ou **DeepSeek (V3/R1)** com o Modo Imparável é executando esses modelos como o *motor de inferência (LLM provider)* dentro de um cliente MCP compatível:
+- **Cursor IDE:** Selecione o modelo (ex: `deepseek-v3`, `deepseek-r1` ou `grok-2`) e utilize a configuração MCP do Cursor (`install.ps1` ou `connectors/cursor/mcp.json`).
+- **OpenCode:** Configure seu `opencode.jsonc` com a chave do provedor do modelo e o servidor MCP do Modo Imparável.
+- **Hermes Agent (Nous Research):** Configure o Hermes com o endpoint LLM da xAI ou DeepSeek enquanto mantém o servidor MCP conectado.
+
+Neste cenário, a conexão MCP é realizada pelo cliente host, e o modelo apenas consome as ferramentas fornecidas.
+
+---
+
+### Cenário 2: Aplicativo Web ou Nativo Próprio do Provedor (x.com / deepseek.com)
+Interfaces web padrão de terceiros não homologaram o protocolo MCP remoto com autenticação personalizada nesta versão:
+- Não cole seu Personal Access Token (PAT) nem credenciais em prompts ou chats web abertos.
+- Se a interface oferecer suporte a Instruções Personalizadas / System Prompts, você pode colar as orientações conceituais de `skill/SKILL.md` como diretriz textual. No entanto, sem um cliente MCP ativo, o modelo não terá acesso a chamadas de ferramentas em tempo real nem aos seus dados no Modo Imparável.
+- Qualquer suporte nativo futuro nos aplicativos oficiais dependerá da disponibilização oficial de suporte a servidores MCP remotos pelos fornecedores.

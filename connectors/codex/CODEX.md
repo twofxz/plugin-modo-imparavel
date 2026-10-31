@@ -1,32 +1,16 @@
-# Conexão com Codex (OpenAI)
+# Codex CLI / extensão — MCP remoto
 
-Para que o **Codex** interaja com o Modo Imparável, são necessárias duas partes: o **MCP** (ferramentas) e a **Skill** (instruções operacionais).
+**Status: requer teste completo da versão e autenticação utilizada.**
 
----
+Adicione o servidor usando a CLI ou a configuração suportada pela versão instalada:
 
-### Passo 1: Conectar o Servidor MCP (Ferramentas)
-No seu arquivo de configuração MCP do Codex ou ambiente de execução (`.codex/mcp.json` ou `mcp.json`):
-
-```json
-{
-  "mcpServers": {
-    "modo-imparavel": {
-      "url": "https://mcp.modoimparavel.site/mcp",
-      "headers": {
-        "Authorization": "Bearer <SEU_PAT_AQUI>"
-      }
-    }
-  }
-}
+```bash
+codex mcp add modo-imparavel --url https://mcp.modoimparavel.site/mcp
+codex mcp list
 ```
 
----
+Para configuração manual, a documentação da OpenAI usa `~/.codex/config.toml` com uma seção `[mcp_servers.modo-imparavel]` e o campo `url`. Configure OAuth ou uma variável de ambiente para o bearer apenas de acordo com o suporte da sua versão. Não coloque credenciais em arquivos de projeto ou mensagens.
 
-### Passo 2: Instalar a Skill (Instruções do Agente)
-O Codex lê as instruções de comportamento do repositório ou de arquivos canônicos:
-1. Copie o arquivo `skill/SKILL.md` para o diretório `.codex/skills/modo-imparavel/SKILL.md` ou adicione uma referência no seu arquivo `AGENTS.md` / `CODEX.md`:
-   ```bash
-   mkdir -p .codex/skills/modo-imparavel
-   cp skill/SKILL.md .codex/skills/modo-imparavel/
-   ```
-2. Ao iniciar uma sessão no Codex, ele terá consciência de todas as 21 ferramentas, regras financeiras e formatos de data (`YYYY-MM-DD`).
+Uma skill opcional pode ser instalada no diretório apropriado ao ambiente. O MCP e a skill são componentes separados: instalar somente a skill não autentica nem conecta ferramentas. Teste leitura, ação, revogação e reconexão.
+
+Fonte: https://developers.openai.com/learn/docs-mcp

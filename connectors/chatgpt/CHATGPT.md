@@ -1,16 +1,11 @@
-# Conexão com ChatGPT (Custom GPTs / Actions)
+# ChatGPT web — servidor MCP personalizado
 
-O ChatGPT Web conecta-se a serviços externos através de **Custom Actions**.
+**Status: requer teste completo com uma nova conta.** O acesso depende das permissões da conta e do workspace.
 
-### Passo a Passo para Conectar:
-1. Acesse o [ChatGPT](https://chatgpt.com) e crie ou edite um **Custom GPT**.
-2. Na aba **Configure**:
-   - Dê o nome de "Modo Imparável".
-   - No campo **Instructions**, copie e cole todo o conteúdo do arquivo `skill/SKILL.md` deste repositório.
-3. Role até a seção **Actions** e clique em **Create new action**.
-4. Em **Schema**, copie e cole o conteúdo do arquivo `connectors/chatgpt/openapi.json`.
-5. Em **Authentication**:
-   - Selecione **API Key**.
-   - Em **Auth Type**, escolha **Bearer**.
-   - No campo **API Key**, cole o seu Personal Access Token (PAT) gerado no Modo Imparável em [https://modoimparavel.site/mcp/connections](https://modoimparavel.site/mcp/connections) (ou no app Android/iOS na tela **Conexões MCP**).
-6. Salve o seu GPT. Agora o seu ChatGPT consegue consultar seu dia, registrar hábitos, finanças e anotações diretamente no Modo Imparável!
+1. Em Plugins, selecione **Adicionar servidor MCP personalizado**.
+2. Informe o nome e a URL `https://mcp.modoimparavel.site/mcp`.
+3. Selecione OAuth e use o registro de cliente apresentado pelo servidor; se necessário, registre o callback exato mostrado pelo ChatGPT.
+4. Entre na conta Modo Imparável, escolha as permissões, autorize e instale o plugin.
+5. Em uma conversa, selecione-o e solicite uma leitura. Para finalizar a homologação, teste uma ação autorizada, revogação e reconexão.
+
+Não cole um PAT em conversa. Custom GPT Actions e o arquivo OpenAPI são um caminho diferente e não estão homologados. Referência: https://developers.openai.com/api/docs/guides/custom-mcp-server

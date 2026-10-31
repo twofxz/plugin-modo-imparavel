@@ -1,15 +1,17 @@
 # Conexão com Claude (Claude Code e Claude Desktop)
 
-O ecossistema Claude necessita de duas etapas para funcionar com perfeição: o **MCP** (execução das ferramentas) e a **Skill** (discernimento de uso e confirmação em 2 etapas).
+**Status: Configuração manual / Não homologado nesta entrega.** Requer teste completo de conexão, leitura, ação autorizada, revogação e reconexão na versão utilizada pelo cliente.
+
+O ecossistema Claude necessita de duas etapas para operar: o **MCP** (execução das ferramentas remotas) e a **Skill** (regras operacionais e confirmação em 2 etapas).
 
 ---
 
 ## Para Claude Code (CLI)
 
 ### Passo 1: Adicionar o Servidor MCP
-No terminal:
+No terminal, utilize a variável de ambiente para não expor seu token no histórico de comandos:
 ```bash
-claude mcp add --transport http modo-imparavel https://mcp.modoimparavel.site/mcp --header "Authorization: Bearer <SEU_PAT_AQUI>"
+claude mcp add --transport http modo-imparavel https://mcp.modoimparavel.site/mcp --header "Authorization: Bearer $MODO_IMPARAVEL_PAT"
 ```
 
 ### Passo 2: Instalar a Skill
@@ -37,12 +39,14 @@ Adicione em seu `claude_desktop_config.json`:
     "modo-imparavel": {
       "url": "https://mcp.modoimparavel.site/mcp",
       "headers": {
-        "Authorization": "Bearer <SEU_PAT_AQUI>"
+        "Authorization": "Bearer ${env:MODO_IMPARAVEL_PAT}"
       }
     }
   }
 }
 ```
 
+> ⚠️ **Atenção:** Nunca versione seu arquivo de configuração preenchido com credenciais reais. Se o Claude Desktop não suportar interpolação de variáveis na sua versão, proteja o arquivo com permissões locais estritas (`chmod 600`) e nunca o suba para o GitHub.
+
 ### Passo 2: Inserir as Regras da Skill
-No Claude Desktop, ao criar um **Project** ou nas **Instruções Personalizadas**, cole o conteúdo de `skill/SKILL.md`. Isso garante que o modelo conheça a regra de confirmação em duas etapas para operações financeiras e de exclusão.
+No Claude Desktop, ao criar um **Project** ou nas **Instruções Personalizadas**, cole o conteúdo de `skill/SKILL.md`. Isso orienta o modelo a respeitar a confirmação em duas etapas para operações financeiras e de exclusão.

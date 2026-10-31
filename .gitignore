@@ -20,11 +20,25 @@ build/
 Thumbs.db
 desktop.ini
 
-# IDE & Editor local caches (configs with personal tokens)
+# Local MCP configurations containing personal tokens
+.cursor/mcp.json
 .cursor/mcp.json.local
+claude_desktop_config.json
 claude_desktop_config.json.local
 config.yaml.local
+openclaw.json.local
+opencode.jsonc.local
+
+# Backups and temporary files created by installers
+*.bak
+*.tmp
+mcp.backup-*.json
+mcp.backup*.json
+
+# Local logs and test artifacts
 *.log
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
+mcp-install-test-*
+mcp-unix-test-*

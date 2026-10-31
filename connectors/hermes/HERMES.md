@@ -1,6 +1,8 @@
 # Conexão com Hermes Agent (Nous Research)
 
-O **Hermes Agent** conecta-se via MCP nativo de duas formas simples:
+**Status: Configuração manual / Não homologado nesta entrega.** Requer teste completo de conexão, leitura, ação autorizada, revogação e reconexão na versão utilizada pelo cliente.
+
+O **Hermes Agent** conecta-se via MCP através de duas configurações:
 
 ### Opção 1: Via Arquivo de Configuração (Recomendado)
 Adicione o seguinte bloco no seu arquivo `~/.hermes/config.yaml`:
@@ -10,30 +12,30 @@ mcp_servers:
   modo-imparavel:
     url: "https://mcp.modoimparavel.site/mcp"
     headers:
-      Authorization: "Bearer <SEU_PAT_AQUI>"
+      Authorization: "Bearer ${MODO_IMPARAVEL_PAT}"
 ```
 
+> ⚠️ **Atenção:** Mantenha suas credenciais protegidas em variáveis de ambiente. Não suba arquivos `config.yaml` com tokens em texto puro para repositórios públicos.
+
 ### Opção 2: Via Comando CLI Oficial do Hermes
-No terminal do seu ambiente ou VPS onde o Hermes está instalado, execute:
+No terminal da máquina onde o Hermes está instalado:
 
 ```bash
 hermes mcp add modo-imparavel --url https://mcp.modoimparavel.site/mcp --auth header
 ```
-O Hermes perguntará:
-1. `Does this server require authentication?` -> Pressione **Enter** (Yes)
-2. `API key / Bearer token:` -> Cole o seu Personal Access Token (`pat_...`) e pressione **Enter**.
+Ao ser solicitado:
+1. `Does this server require authentication?` -> **Yes**
+2. `API key / Bearer token:` -> Forneça a variável ou token PAT emitido no painel de [Conexões MCP](https://modoimparavel.site/mcp/connections).
 
 ### Instalação da Skill no Hermes
-
-O Hermes possui um gerenciador nativo de skills. Basta rodar este comando único no terminal da VPS:
+Para instalar a skill no gerenciador nativo do Hermes:
 
 ```bash
-hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/skill/SKILL.md -y
+hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/skill/SKILL.md
 ```
 
-O Hermes fará o download, executará o scanner de segurança automático e ativará a skill `modo-imparavel` imediatamente.
-
-Para verificar se a skill está instalada e ativa:
+Para verificar se a skill está instalada:
 ```bash
 hermes skills list
 ```
+Lembre-se: a instalação da skill é complementar e não substitui a conexão MCP nem a validação do servidor.

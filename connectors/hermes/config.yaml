@@ -2,4 +2,4 @@ mcp_servers:
   modo-imparavel:
     url: "https://mcp.modoimparavel.site/mcp"
     headers:
-      Authorization: "Bearer <SEU_PAT_AQUI>"
+      Authorization: "Bearer ${MODO_IMPARAVEL_PAT}"

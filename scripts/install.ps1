@@ -1,100 +1,58 @@
-# ==============================================================================
-# Modo Imparável — Instalador Universal de MCP para Windows (PowerShell)
-# Endpoint Oficial: https://mcp.modoimparavel.site/mcp
-# ==============================================================================
-
 param(
-    [string]$Token,
-    [string]$Target
+    [ValidateSet('cursor')][string]$Target = 'cursor',
+    [string]$ConfigPath = (Join-Path $HOME '.cursor/mcp.json')
 )
 
-$ErrorActionPreference = "Stop"
-$McpUrl = "https://mcp.modoimparavel.site/mcp"
+$ErrorActionPreference = 'Stop'
 
-Write-Host "======================================================" -ForegroundColor Cyan
-Write-Host "       MODO IMPARÁVEL — INSTALADOR MCP UNIVERSAL      " -ForegroundColor Cyan
-Write-Host "======================================================" -ForegroundColor Cyan
-Write-Host "Conecte sua IA favorita ao Modo Imparável em segundos.`n"
-
-# Validação do Token
-if (-not $Token) {
-    if ($env:MODO_IMPARAVEL_PAT) {
-        $Token = $env:MODO_IMPARAVEL_PAT
-    } else {
-        Write-Host "Para conectar, você precisa do seu Personal Access Token (PAT)." -ForegroundColor Yellow
-        Write-Host "Gere sua chave na web: https://modoimparavel.site/mcp/connections" -ForegroundColor Yellow
-        Write-Host "Ou no aplicativo móvel (Android/iOS): Seção Conexões MCP`n" -ForegroundColor Yellow
-        $SecurePass = Read-Host -Prompt "Cole seu Token PAT aqui" -AsSecureString
-        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePass)
-        $Token = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+if (Test-Path -LiteralPath $ConfigPath) {
+    try {
+        $config = Get-Content -Raw -LiteralPath $ConfigPath | ConvertFrom-Json
+    } catch {
+        throw 'Configuração JSON inválida ou corrompida; nenhum arquivo foi alterado.'
     }
+    if ($config -isnot [pscustomobject]) { throw 'Configuração inválida; nenhum arquivo foi alterado.' }
+} else {
+    $config = [pscustomobject]@{}
 }
 
-if (-not $Token) {
-    Write-Host "Erro: Token PAT não informado. Operação cancelada." -ForegroundColor Red
-    exit 1
+if ($null -eq $config.mcpServers) { $config | Add-Member -NotePropertyName mcpServers -NotePropertyValue ([pscustomobject]@{}) }
+if ($config.mcpServers -isnot [pscustomobject]) { throw 'mcpServers inválido; nenhum arquivo foi alterado.' }
+
+$server = [pscustomobject]@{
+    url = 'https://mcp.modoimparavel.site/mcp'
+    headers = [pscustomobject]@{ Authorization = 'Bearer ${env:MODO_IMPARAVEL_PAT}' }
 }
 
-function Configure-Cursor {
-    Write-Host "`nConfigurando Cursor IDE..." -ForegroundColor Cyan
-    $cursorDir = ".cursor"
-    if (-not (Test-Path $cursorDir)) { New-Item -ItemType Directory -Path $cursorDir | Out-Null }
-    
-    $configContent = @"
-{
-  "mcpServers": {
-    "modo-imparavel": {
-      "url": "$McpUrl",
-      "headers": {
-        "Authorization": "Bearer $Token"
-      }
-    }
-  }
-}
-"@
-    Set-Content -Path "$cursorDir/mcp.json" -Value $configContent -Encoding UTF8
-    
-    if (Test-Path "connectors/cursor/modo-imparavel.mdc") {
-        $rulesDir = "$cursorDir/rules"
-        if (-not (Test-Path $rulesDir)) { New-Item -ItemType Directory -Path $rulesDir | Out-Null }
-        Copy-Item -Path "connectors/cursor/modo-imparavel.mdc" -Destination "$rulesDir/" -Force
-    }
-    Write-Host "✓ Cursor configurado com sucesso em .cursor/mcp.json!" -ForegroundColor Green
+if ($null -ne $config.mcpServers.PSObject.Properties['modo-imparavel']) {
+    $config.mcpServers.'modo-imparavel' = $server
+} else {
+    $config.mcpServers | Add-Member -NotePropertyName 'modo-imparavel' -NotePropertyValue $server
 }
 
-function Configure-ClaudeDesktop {
-    Write-Host "`nConfigurando Claude Desktop..." -ForegroundColor Cyan
-    $claudePath = "$env:APPDATA\Claude\claude_desktop_config.json"
-    $claudeDir = Split-Path -Parent $claudePath
-    if (-not (Test-Path $claudeDir)) { New-Item -ItemType Directory -Path $claudeDir | Out-Null }
+$parent = Split-Path -Parent $ConfigPath
+if ($parent -and !(Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
 
-    $configContent = @"
-{
-  "mcpServers": {
-    "modo-imparavel": {
-      "url": "$McpUrl",
-      "headers": {
-        "Authorization": "Bearer $Token"
-      }
-    }
-  }
-}
-"@
-    Set-Content -Path $claudePath -Value $configContent -Encoding UTF8
-    Write-Host "✓ Claude Desktop configurado em $claudePath!" -ForegroundColor Green
+if (Test-Path -LiteralPath $ConfigPath) {
+    $timestamp = (Get-Date).ToString('yyyyMMdd-HHmmss')
+    $tsBackup = Join-Path $parent "mcp.backup-$timestamp.json"
+    Copy-Item -LiteralPath $ConfigPath -Destination $tsBackup -ErrorAction Stop
+    $legacyBackup = "$ConfigPath.bak"
+    Copy-Item -LiteralPath $ConfigPath -Destination $legacyBackup -Force -ErrorAction Stop
 }
 
-# Roteamento
-switch ($Target) {
-    "cursor" { Configure-Cursor }
-    "claude" { Configure-ClaudeDesktop }
-    default {
-        Configure-Cursor
-        Configure-ClaudeDesktop
-    }
+$tempPath = "$ConfigPath.$([guid]::NewGuid().ToString('N')).tmp"
+try {
+    $config | ConvertTo-Json -Depth 50 | Set-Content -LiteralPath $tempPath -Encoding UTF8
+    Move-Item -LiteralPath $tempPath -Destination $ConfigPath -Force
+} finally {
+    if (Test-Path -LiteralPath $tempPath) { Remove-Item -LiteralPath $tempPath -Force }
 }
 
-Write-Host "`n======================================================" -ForegroundColor Green
-Write-Host "   CONEXÃO COM O MODO IMPARÁVEL PRONTA PARA USO!     " -ForegroundColor Green
-Write-Host "======================================================" -ForegroundColor Green
-Write-Host "Agora sua IA já consegue consultar seu dia, registrar hábitos, finanças e muito mais.`n"
+Write-Host 'Configuração do Cursor atualizada com sucesso em: ' $ConfigPath
+Write-Host 'Servidor registrado: modo-imparavel (https://mcp.modoimparavel.site/mcp)'
+Write-Host 'Outros servidores existentes foram preservados intactos.'
+Write-Host 'Backup recuperável criado com timestamp (mcp.backup-YYYYMMDD-HHmmss.json).'
+Write-Host 'Defina MODO_IMPARAVEL_PAT no ambiente do Cursor e reinicie-o.'
+Write-Host 'A skill não foi instalada automaticamente. Consulte o guia antes de usá-la.'
+Write-Host 'Nenhuma conexão foi testada; confirme a autenticação no cliente.'
