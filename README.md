@@ -24,19 +24,19 @@ Para conectar qualquer IA, você precisa de um **Personal Access Token (PAT)** e
 Se você utiliza Linux, macOS ou está em uma VPS (por exemplo, rodando o **Hermes Agent** ou **Claude Code**):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/modo-imparavel/plugin-modo-imparavel/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/install.sh | bash
 ```
 
 Se preferir clonar e executar localmente:
 ```bash
-git clone https://github.com/modo-imparavel/plugin-modo-imparavel.git
+git clone https://github.com/twofxz/plugin-modo-imparavel.git
 cd plugin-modo-imparavel
 bash install.sh
 ```
 
 ### No Windows (PowerShell):
 ```powershell
-irm https://raw.githubusercontent.com/modo-imparavel/plugin-modo-imparavel/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/install.ps1 | iex
 ```
 
 O instalador detectará automaticamente os agentes presentes na sua máquina (Hermes, Claude, Cursor, OpenCode), solicitará seu Token PAT com segurança e configurará tudo em segundos.
