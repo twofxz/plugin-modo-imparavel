@@ -24,8 +24,16 @@ O Hermes perguntará:
 2. `API key / Bearer token:` -> Cole o seu Personal Access Token (`pat_...`) e pressione **Enter**.
 
 ### Instalação da Skill no Hermes
-Copie a pasta `skill/` deste repositório para o diretório de skills do Hermes:
+
+O Hermes possui um gerenciador nativo de skills. Basta rodar este comando único no terminal da VPS:
+
 ```bash
-mkdir -p ~/.hermes/skills/modo-imparavel
-cp skill/SKILL.md ~/.hermes/skills/modo-imparavel/
+hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/skill/SKILL.md -y
+```
+
+O Hermes fará o download, executará o scanner de segurança automático e ativará a skill `modo-imparavel` imediatamente.
+
+Para verificar se a skill está instalada e ativa:
+```bash
+hermes skills list
 ```

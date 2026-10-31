@@ -111,10 +111,9 @@ mcp_servers:
       Authorization: "Bearer <SEU_PAT_AQUI>"
 ```
 
-Para instalar a skill no Hermes:
+Para instalar a skill no Hermes em 1 comando:
 ```bash
-mkdir -p ~/.hermes/skills/modo-imparavel
-cp skill/SKILL.md ~/.hermes/skills/modo-imparavel/
+hermes skills install https://raw.githubusercontent.com/twofxz/plugin-modo-imparavel/main/skill/SKILL.md -y
 ```
 
 ---
