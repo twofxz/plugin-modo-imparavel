@@ -96,10 +96,11 @@ Edite o arquivo de configuração do Claude Desktop (`claude_desktop_config.json
 ### 3. Hermes Agent (Nous Research)
 O Hermes Agent é ideal para rodar em VPS ou servidores locais:
 
-**Via CLI:**
+**Via CLI Oficial:**
 ```bash
-hermes mcp add --name modo-imparavel --url https://mcp.modoimparavel.site/mcp --headers "Authorization=Bearer <SEU_PAT_AQUI>"
+hermes mcp add modo-imparavel --url https://mcp.modoimparavel.site/mcp --auth header
 ```
+*(O Hermes solicitará que você cole o seu Token PAT no terminal).*
 
 **Ou adicionando em `~/.hermes/config.yaml`:**
 ```yaml

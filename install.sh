@@ -57,12 +57,7 @@ install_hermes() {
     CONFIG_FILE="$HERMES_DIR/config.yaml"
     mkdir -p "$HERMES_DIR"
 
-    # Se comando hermes estiver disponível no PATH, usar hermes mcp add
-    if command -v hermes &> /dev/null; then
-        hermes mcp add --name modo-imparavel --url "$MCP_URL" --headers "Authorization=Bearer $PAT_TOKEN" 2>/dev/null || true
-    fi
-
-    # Garante entrada no config.yaml
+    # Configura diretamente o config.yaml do Hermes
     if [ ! -f "$CONFIG_FILE" ]; then
         cat <<EOF > "$CONFIG_FILE"
 mcp_servers:
