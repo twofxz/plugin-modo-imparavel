@@ -38,7 +38,8 @@ if [ -z "$PAT_TOKEN" ]; then
         PAT_TOKEN="$MODO_IMPARAVEL_PAT"
     else
         echo -e "${YELLOW}Para conectar, você precisa do seu Personal Access Token (PAT).${NC}"
-        echo -e "Gere sua chave em: ${BOLD}https://modoimparavel.site/conexoes-mcp${NC}\n"
+        echo -e "Gere sua chave na web: ${BOLD}https://modoimparavel.site/mcp/connections${NC}"
+        echo -e "Ou no app nativo (Android/iOS): ${BOLD}Página Conexões MCP${NC}\n"
         read -s -p "Cole seu Token PAT aqui e pressione ENTER: " PAT_TOKEN
         echo ""
     fi

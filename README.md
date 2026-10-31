@@ -10,10 +10,12 @@ Este repositório é o hub oficial universal para transformar agentes como **Cur
 
 Este repositório de conexão é **público**, porém o acesso real aos dados e ferramentas é **exclusivo para assinantes premium do Modo Imparável**.
 
-Para conectar qualquer IA, você precisa de um **Personal Access Token (PAT)** emitido pelo sistema:
-1. Acesse o painel web: [https://modoimparavel.site/conexoes-mcp](https://modoimparavel.site/conexoes-mcp)
-2. Clique no botão **"Gerar Novo Token (PAT)"**.
-3. Copie o token gerado (começa com `pat_...`). Guarde-o com segurança.
+Para conectar qualquer IA, você precisa de um **Personal Access Token (PAT)** emitido pelo sistema. Você pode obtê-lo de duas formas:
+1. **Pela Web:** Acesse [https://modoimparavel.site/mcp/connections](https://modoimparavel.site/mcp/connections)
+2. **Pelo Aplicativo Nativo (Android e iOS):** No aplicativo oficial do Modo Imparável (disponível na Google Play Store e Apple App Store), acesse a tela **Conexões MCP**.
+3. Clique no botão **"Gerar Novo Token (PAT)"** e copie a chave gerada (inicia com `pat_...`). Guarde-a com segurança.
+
+> 📱 **Disponível no App:** O Modo Imparável conta com aplicativo nativo para Android e iOS. Você pode gerenciar suas conexões de IA e emitir seus tokens diretamente pelo celular na aba **Conexões MCP**.
 
 > ⚠️ **Atenção:** Usuários sem assinatura ativa ou sem conta no Modo Imparável não conseguem gerar o token, e qualquer requisição não autorizada será rejeitada com código `401 Unauthorized`.
 
