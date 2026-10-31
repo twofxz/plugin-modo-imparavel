@@ -1,0 +1,20 @@
+---
+description: Regras e contexto para o agente do Cursor interagir com o Modo Imparável MCP
+globs: *
+alwaysApply: false
+---
+
+# Modo Imparável — Regras para Cursor AI
+
+Você tem acesso ao servidor MCP oficial do **Modo Imparável** (`https://mcp.modoimparavel.site/mcp`).
+
+## Diretrizes de Uso das Ferramentas
+1. **Consultas Rápidas:** Use `consultar_dia` com a data atual (formato `YYYY-MM-DD`) para verificar hábitos pendentes, rotinas e metas diárias.
+2. **Finanças Seguras (2 Etapas):**
+   - Ao lançar receitas, despesas ou assinaturas, chame primeiro `preparar_*`.
+   - Apresente os valores e categoria ao usuário e pergunte se ele confirma o lançamento.
+   - Somente após confirmação explícita, execute `confirmar_financas` com o token gerado.
+3. **Exclusões Seguras (2 Etapas):**
+   - Para apagar itens, utilize `preparar_exclusao`.
+   - Peça confirmação expressa ao usuário antes de chamar `confirmar_exclusao`.
+4. **Hidratação:** Para registrar água, use `registrar_agua(amount_ml: integer, date: YYYY-MM-DD)`.

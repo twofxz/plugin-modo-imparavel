@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "modo-imparavel": {
+        "type": "remote",
+        "url": "https://mcp.modoimparavel.site/mcp",
+        "headers": {
+          "Authorization": "Bearer <SEU_PAT_AQUI>"
+        }
+      }
+    }
+  }
+}

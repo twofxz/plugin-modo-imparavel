@@ -1,0 +1,12 @@
+{
+  "mcp": {
+    "servers": {
+      "modo-imparavel": {
+        "url": "https://mcp.modoimparavel.site/mcp",
+        "headers": {
+          "Authorization": "Bearer <SEU_PAT_AQUI>"
+        }
+      }
+    }
+  }
+}

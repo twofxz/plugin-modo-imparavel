@@ -1,0 +1,98 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Modo Imparável MCP Gateway API",
+    "description": "API oficial para conexão do ChatGPT Custom Actions com o Modo Imparável.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://mcp.modoimparavel.site",
+      "description": "Servidor MCP de Produção do Modo Imparável"
+    }
+  ],
+  "paths": {
+    "/mcp": {
+      "post": {
+        "operationId": "executeMcpRpc",
+        "summary": "Executa chamadas de ferramentas e consultas via protocolo MCP",
+        "description": "Endpoint JSON-RPC para execução das 21 ferramentas do Modo Imparável (consultar_dia, registrar_agua, finanças, etc).",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "jsonrpc": {
+                    "type": "string",
+                    "example": "2.0"
+                  },
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "method": {
+                    "type": "string",
+                    "example": "tools/call"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "consultar_dia"
+                      },
+                      "arguments": {
+                        "type": "object",
+                        "example": {
+                          "date": "2026-10-31"
+                        }
+                      }
+                    },
+                    "required": ["name", "arguments"]
+                  }
+                },
+                "required": ["jsonrpc", "method", "params"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado da execução da ferramenta MCP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jsonrpc": { "type": "string" },
+                    "result": { "type": "object" },
+                    "id": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado — Personal Access Token inválido ou expirado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "PAT"
+      }
+    }
+  }
+}
