@@ -12,7 +12,7 @@ Esta skill instrui o agente de inteligência artificial a interagir com o ecossi
 
 ## 1. Princípios de Operação
 
-1. **Gating de Assinatura Premium:** O acesso às ferramentas exige um Personal Access Token (PAT) válido emitido em `https://app.modoimparavel.site/conexoes-mcp`. Sem esse token, as chamadas falham com 401.
+1. **Gating de Assinatura Premium:** O acesso às ferramentas exige um Personal Access Token (PAT) válido emitido em `https://modoimparavel.site/conexoes-mcp`. Sem esse token, as chamadas falham com 401.
 2. **Confirmação em Duas Etapas:** O agente NUNCA deve executar ações financeiras de mutação ou exclusões de itens diretamente. Deve sempre chamar a ferramenta de preparação (`preparar_*`), apresentar o resumo ao usuário, solicitar sua confirmação explícita e somente então invocar `confirmar_*`.
 3. **Formato de Datas:** Sempre utilize datas no formato canônico `YYYY-MM-DD` (ex: `2026-10-31`).
 4. **Idempotência:** Em requisições de criação ou preparação, forneça `idempotency_key` quando solicitado para evitar duplicações em reenvios de rede.
@@ -91,6 +91,6 @@ Agente:
 
 ## 4. Tratamento de Erros e Casos Especiais
 
-- **Erro 401 (Unauthorized):** Informe amigavelmente o usuário de que seu Personal Access Token (PAT) expirou ou foi revogado, direcionando-o para [app.modoimparavel.site/conexoes-mcp](https://app.modoimparavel.site/conexoes-mcp).
+- **Erro 401 (Unauthorized):** Informe amigavelmente o usuário de que seu Personal Access Token (PAT) expirou ou foi revogado, direcionando-o para [modoimparavel.site/conexoes-mcp](https://modoimparavel.site/conexoes-mcp).
 - **Tool execution failed:** Verifique os parâmetros obrigatórios da ferramenta e formato de data (`YYYY-MM-DD`).
 - **Token de Confirmação Expirado:** Se o usuário demorar muito para confirmar uma operação financeira, informe que o token de segurança expirou e prepare a operação novamente.

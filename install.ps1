@@ -22,7 +22,7 @@ if (-not $Token) {
         $Token = $env:MODO_IMPARAVEL_PAT
     } else {
         Write-Host "Para conectar, você precisa do seu Personal Access Token (PAT)." -ForegroundColor Yellow
-        Write-Host "Gere sua chave em: https://app.modoimparavel.site/conexoes-mcp`n" -ForegroundColor Yellow
+        Write-Host "Gere sua chave em: https://modoimparavel.site/conexoes-mcp`n" -ForegroundColor Yellow
         $SecurePass = Read-Host -Prompt "Cole seu Token PAT aqui" -AsSecureString
         $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePass)
         $Token = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)

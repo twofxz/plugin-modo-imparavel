@@ -12,5 +12,5 @@ O ChatGPT Web conecta-se a serviços externos através de **Custom Actions**.
 5. Em **Authentication**:
    - Selecione **API Key**.
    - Em **Auth Type**, escolha **Bearer**.
-   - No campo **API Key**, cole o seu Personal Access Token (PAT) gerado no Modo Imparável: [https://app.modoimparavel.site/conexoes-mcp](https://app.modoimparavel.site/conexoes-mcp).
+   - No campo **API Key**, cole o seu Personal Access Token (PAT) gerado no Modo Imparável: [https://modoimparavel.site/conexoes-mcp](https://modoimparavel.site/conexoes-mcp).
 6. Salve o seu GPT. Agora o seu ChatGPT consegue consultar seu dia, registrar hábitos, finanças e anotações diretamente no Modo Imparável!
